@@ -4,6 +4,15 @@ import constants from './constants';
 import axios from 'axios';
 import Followers from './components/Followers';
 import UserCard from './components/UserCard';
+import {
+  STATUS,
+  Loading,
+  Avatar,
+  Logo,
+  Logotype,
+  Container,
+  Header
+} from "gitstar-components";
 
 class App extends React.Component{
 
@@ -11,9 +20,11 @@ class App extends React.Component{
   constructor(){
     super();
     this.state ={
-      dummystate: '',
       userData: {},
-      followersData: {}
+      followersData: {},
+      status: STATUS.INITIAL,
+      token: null
+
     }
   }
 
@@ -34,14 +45,21 @@ class App extends React.Component{
 
   }
 
+  // authorization code grabber
+
+  authCodeGrabber() {
+    const code = window.location.href.match(/?code=(.*)/) && window.location.href.match(/?code=(.*)/)[1];
+    return console.log(code);
+  }
+
   // componentdidmount function calls axios helper after component has mounted
 
   componentDidMount(){
-      this.axiosHelper(constants.userUrl, 'userData');
+      // this.axiosHelper(constants.userUrl, 'userData');
       // setTimeout(() => {
       //   console.log(this.state.userData);
       // }, 1000);
-      this.axiosHelper(constants.followersUrl, 'followersData');
+      // this.axiosHelper(constants.followersUrl, 'followersData');
       // setTimeout(() => {
       //   console.log(this.state.followersData);
       // }, 1000);
@@ -54,6 +72,11 @@ class App extends React.Component{
         <h1>Github Info App</h1>
         <UserCard/>
         <Followers/>
+        <a
+          href={`https://github.com/login/oauth/authorize?client_id=${constants.clientId}&scope=user&redirect_uri=${constants.redirect_uri}`}
+        >
+          Login
+        </a>
       </div>
     )
   }
