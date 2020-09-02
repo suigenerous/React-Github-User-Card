@@ -9,13 +9,13 @@ export default class Follower extends React.Component{
     }
 
     render(){
-        console.log(this.props.followerObj);
-        const {login, avatar_url, url} = this.props.followerObj;
+        // console.log(this.props.followerObj);
+        const {login, avatar_url, html_url} = this.props.followerObj;
 
         return (
             <div>
-                <img src = {avatar_url} alt = {`${login}'s avatar picture`}/>
-                <h4>{login}</h4>
+                <img src = {avatar_url} alt = {`${login}'s avatar`}/>
+                <a href = {html_url}>{login}</a>
             </div>
         )
     }
