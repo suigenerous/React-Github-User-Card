@@ -2,8 +2,7 @@ import React from 'react';
 import './App.css';
 import constants from './constants';
 import axios from 'axios';
-import Followers from './components/Followers';
-import UserCard from './components/UserCard';
+import InfoContainer from './components/InfoContainer'
 
 
 class App extends React.Component{
@@ -15,7 +14,8 @@ class App extends React.Component{
       userData: {},
       followersData: {},
       code: null,
-      token: null
+      token: null,
+      loggedIn: false
     }
   }
 
@@ -31,9 +31,11 @@ class App extends React.Component{
         .then(res => {
           console.log(res.data);
           this.setState({[value]: res.data});
+          this.setState({loggedIn: true});
         })
         .catch(err =>{
           console.log(err);
+          this.setState({loggedIn: false});
         })
     )
 
@@ -62,18 +64,14 @@ class App extends React.Component{
       ) 
   }
 
+  // determine logged in status
+
+
+
 
   // componentdidmount function calls axios helper after component has mounted
 
   componentDidMount(){
-      // this.axiosHelper(constants.userUrl, 'userData');
-      // setTimeout(() => {
-      //   console.log(this.state.userData);
-      // }, 1000);
-      // this.axiosHelper(constants.followersUrl, 'followersData');
-      // setTimeout(() => {
-      //   console.log(this.state.followersData);
-      // }, 1000);
       this.authCodeGrabber();
       setTimeout(() => {
         if (this.state.code !== null){
@@ -86,11 +84,11 @@ class App extends React.Component{
 
   // render function
   render(){
+
     return(
       <div>
         <h1>Github Info App</h1>
-        <UserCard/>
-        <Followers/>
+        <InfoContainer loggedIn = {this.state.loggedIn} userData = {this.state.userData} followersData = {this.state.followersData}/>
         <a
           href={`https://github.com/login/oauth/authorize?client_id=${constants.clientId}&scope=user&redirect_uri=${constants.redirect_uri}`}
         >
