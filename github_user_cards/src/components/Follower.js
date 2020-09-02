@@ -1,4 +1,7 @@
 import React from 'react';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
 
 export default class Follower extends React.Component{
     constructor(props){
@@ -13,10 +16,10 @@ export default class Follower extends React.Component{
         const {login, avatar_url, html_url} = this.props.followerObj;
 
         return (
-            <div>
+            <Card>
                 <img src = {avatar_url} alt = {`${login}'s avatar`}/>
                 <a href = {html_url}>{login}</a>
-            </div>
+            </Card>
         )
     }
 }

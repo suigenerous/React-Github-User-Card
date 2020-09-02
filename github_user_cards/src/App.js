@@ -3,6 +3,9 @@ import './App.css';
 import constants from './constants';
 import axios from 'axios';
 import InfoContainer from './components/InfoContainer'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 
 
 class App extends React.Component{
@@ -78,22 +81,33 @@ class App extends React.Component{
 
   // render function
   render(){
-    return(
-      <div>
-        <h1>Github Info App</h1>
-        <InfoContainer 
-          // loggedIn = {this.state.followersData === {} || this.state.userData === {} ? false : true} 
-          // loggedIn = {false}
-          userData = {this.state.userData} 
-          followersData = {this.state.followersData}
-        />
-        <a
-          href={`https://github.com/login/oauth/authorize?client_id=${constants.clientId}&scope=user&redirect_uri=${constants.redirect_uri}`}
-        >
-          Login
-        </a>
-      </div>
-    )
+    if (this.state.followersData.length){
+      return(
+        <Container>
+          <h1>Github Info App</h1>
+          <InfoContainer 
+            // loggedIn = {this.state.followersData === {} || this.state.userData === {} ? false : true} 
+            // loggedIn = {false}
+            userData = {this.state.userData} 
+            followersData = {this.state.followersData}
+          />
+        </Container>
+      )
+    }
+    else{
+      return(
+        <Container>
+          <h1>Github Info App</h1>
+          <a
+            href={`https://github.com/login/oauth/authorize?client_id=${constants.clientId}&scope=user&redirect_uri=${constants.redirect_uri}`}
+          >
+            Login
+          </a>
+        </Container>
+      )
+
+    }
+    
   }
 }
 
