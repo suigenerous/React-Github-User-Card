@@ -4,15 +4,7 @@ import constants from './constants';
 import axios from 'axios';
 import Followers from './components/Followers';
 import UserCard from './components/UserCard';
-import {
-  STATUS,
-  Loading,
-  Avatar,
-  Logo,
-  Logotype,
-  Container,
-  Header
-} from "gitstar-components";
+
 
 class App extends React.Component{
 
@@ -22,9 +14,8 @@ class App extends React.Component{
     this.state ={
       userData: {},
       followersData: {},
-      status: STATUS.INITIAL,
+      code: null,
       token: null
-
     }
   }
 
@@ -32,11 +23,14 @@ class App extends React.Component{
 
   axiosHelper(url, value){
     return (
-      axios.get(url)
+      axios.get(url, {
+        headers: {
+          Authorization: `${this.state.token}OAUTH-TOKEN`
+        }
+      })
         .then(res => {
-          // console.log(res.data);
+          console.log(res.data);
           this.setState({[value]: res.data});
-          debugger;
         })
         .catch(err =>{
           console.log(err);
@@ -48,9 +42,26 @@ class App extends React.Component{
   // authorization code grabber
 
   authCodeGrabber() {
-    const code = window.location.href.match(/?code=(.*)/) && window.location.href.match(/?code=(.*)/)[1];
-    return console.log(code);
+    const code = window.location.href.split('=')[1];
+    return this.setState({code: code});
   }
+
+  // token grabber
+
+  tokenGrabber(){
+      return(
+        axios.get(`https://user-cards-william-herman.herokuapp.com/authenticate/${this.state.code}`)
+          .then(res => {
+            // console.log(res.data.token);
+            this.setState({token: res.data.token})
+          })
+          .catch(err => {
+            console.log(err);
+            debugger;
+          })
+      ) 
+  }
+
 
   // componentdidmount function calls axios helper after component has mounted
 
@@ -63,6 +74,14 @@ class App extends React.Component{
       // setTimeout(() => {
       //   console.log(this.state.followersData);
       // }, 1000);
+      this.authCodeGrabber();
+      setTimeout(() => {
+        if (this.state.code !== null){
+          this.tokenGrabber();
+        }
+      }, 1000);
+      this.axiosHelper(constants.userUrl, 'userData');
+      this.axiosHelper(constants.followersUrl, 'followersData');
   }
 
   // render function
