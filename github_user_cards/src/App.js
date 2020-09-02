@@ -29,9 +29,8 @@ class App extends React.Component{
         }
       })
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.setState({[value]: res.data});
-          this.setState({loggedIn: true});
         })
         .catch(err =>{
           console.log(err);
@@ -64,11 +63,6 @@ class App extends React.Component{
       ) 
   }
 
-  // determine logged in status
-
-
-
-
   // componentdidmount function calls axios helper after component has mounted
 
   componentDidMount(){
@@ -84,11 +78,15 @@ class App extends React.Component{
 
   // render function
   render(){
-
     return(
       <div>
         <h1>Github Info App</h1>
-        <InfoContainer loggedIn = {this.state.loggedIn} userData = {this.state.userData} followersData = {this.state.followersData}/>
+        <InfoContainer 
+          // loggedIn = {this.state.followersData === {} || this.state.userData === {} ? false : true} 
+          // loggedIn = {false}
+          userData = {this.state.userData} 
+          followersData = {this.state.followersData}
+        />
         <a
           href={`https://github.com/login/oauth/authorize?client_id=${constants.clientId}&scope=user&redirect_uri=${constants.redirect_uri}`}
         >

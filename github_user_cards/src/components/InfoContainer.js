@@ -6,25 +6,29 @@ export default class InfoContainer extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dummyState: ''
+            dummyState: '',
+            loggedIn: false
         }
     }
 
+
+
     render(){
-        if (this.props.loggedIn === true){
+        if (this.props.followersData.length){
             return(
                 <div>
                     <UserCard userData = {this.props.userData}/>
-                    <Followers followersData = {this.props.userData}/>
+                    <Followers followersData = {this.props.followersData}/>
                 </div>
             )
         }
-        else{
+        else {
             return(
                 <div>
-
+                    
                 </div>
             )
         }
+        
     }
 }
